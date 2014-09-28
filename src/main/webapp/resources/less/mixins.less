@@ -1,0 +1,149 @@
+// Cms transitions
+.transition(@transition) {
+  -webkit-transition: @transition;
+  -khtml-transition: @transition;
+  -moz-transition: @transition;
+  -ms-transition: @transition;
+  -o-transition: @transition;
+  transition: @transition;
+}
+.transition-property(@transition-property) {
+  -webkit-transition: @transition-property;
+  -khtml-transition: @transition-property;
+  -moz-transition: @transition-property;
+  -ms-transition: @transition-property;
+  -o-transition: @transition-property;
+  transition: @transition-property;
+}
+.transition-duration(@transition-duration) {
+  -webkit-transition: @transition-duration;
+  -khtml-transition: @transition-duration;
+  -moz-transition: @transition-duration;
+  -ms-transition: @transition-duration;
+  -o-transition: @transition-duration;
+  transition: @transition-duration;
+}
+.transition-time-function(@transition-time-function) {
+  -webkit-transition: @transition-time-function;
+  -khtml-transition: @transition-time-function;
+  -moz-transition: @transition-time-function;
+  -ms-transition: @transition-time-function;
+  -o-transition: @transition-time-function;
+  transition: @transition-time-function;
+}
+.transition-delay(@transition-delay) {
+  -webkit-transition: @transition-delay;
+  -khtml-transition: @transition-delay;
+  -moz-transition: @transition-delay;
+  -ms-transition: @transition-delay;
+  -o-transition: @transition-delay;
+  transition: @transition-delay;
+}
+.transition-transform(@transition) {
+  -webkit-transition: -webkit-transform @transition;
+  -khtml-transition: -khtml-transform @transition;
+  -moz-transition: -moz-transform @transition;
+  -ms-transition: -ms-transform @transition;
+  -o-transition: -o-transform @transition;
+  transition: @transition;
+}
+// Grid System
+// -----------
+
+// Centered container element
+.container-fixed() {
+  width: 83%;
+  margin: 1% 16% 1% 1%;
+  padding: 0;
+  @media (min-width: @screen-sm +1),(min-width: @screen-md) {
+    width: 88%;
+    margin: 1% 11% 1% 1%;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: 93%;
+    margin: 1% 6% 1% 1%;
+  }
+  &:extend(.clearfix all);
+}
+.make-row{
+  text-align: center;
+  margin: 0;
+  margin-top: 2.5%;
+}
+// Form control focus state
+.form-control-focus(@color: @input-border-focus) {
+  &:focus {
+    border-color: @brand-primary;
+    outline: 0;
+    .box-shadow(~"inset 0 0px 0px rgba(0,0,0,0), 0 0 0px rgba(0,0,0,0)");
+  }
+}
+// Generate the small columns
+.make-md-column(@columns; @gutter: @grid-gutter-width) {
+  position: relative;
+  text-align: left;
+  overflow: auto;
+  float: none;
+  display: block;
+  height: auto;
+  padding: 0% 0% 5% 0%;
+  margin-bottom: 5%;
+  border-bottom: inset @gray-lighter 50px ;
+
+  @media (min-width: @screen-md-min),(min-width: @screen-lg-min) {
+    height: 45em;
+    margin: @gutter @gutter/2 @gutter @gutter/2;
+    width: percentage((@columns / @grid-columns)) - @gutter;
+    float: none;
+    display: inline-block;
+  }
+}
+.textLandscape{
+  font-size: .8em;
+  line-height: 1.2em;
+  margin: 1% 0 0 0;
+  padding: 0;
+}
+.textPadding{
+  padding: 0;
+  margin: 5% 2% 5% 2%;
+}
+.withShadow{
+  border-width: 0 0 0 4px;
+  border-radius: 2px;
+  border-bottom-right-radius: 50px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.post-small{
+  .make-md-column(3);
+  .withShadow();
+  background-color: @gray-lighter;
+  @media (min-width: @screen-lg-min) {
+    .make-md-column(2);
+  }
+}
+.post-medium{
+  .make-md-column(4);
+  .withShadow();
+  background-color: @gray-lighter;
+ }
+.post-large{
+  .make-md-column(6);
+  .withShadow();
+  background-color: @gray-lighter;
+}
+#img-holder{
+  display: block;
+  width: 100%;
+  height: 20em;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+.article{
+
+}
+.edit-buttons{
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.1) ;
+}

@@ -1,0 +1,7 @@
+CREATE TABLE  `cms`.`article` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(50) NOT NULL,
+  `author` VARCHAR(50) NOT NULL,
+  `content` TEXT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
