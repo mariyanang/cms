@@ -37,7 +37,7 @@
         <ul id="master-drop">
             <li><a class="form-link" id="signIn-link" href="#user">Sign In</a></li>
             <li><a class="form-link" id="signUp-link" href="#new-user">Sign Up</a></li>
-            <li><a class="form-link" id="addArticle" href="<%= request.getContextPath() %>/articles/add">Add article</a>
+            <li><a class="form-link" id="addArticle" onclick="createNewArticle()">Add article</a>
             </li>
         </ul>
         <input class="form-control form-control-focus" id="user-mail" type="email" placeholder="Your email"
@@ -52,10 +52,18 @@
 </nav>
 <script>
     var currentArticleId;
-    function setArticleId(articleId){
+    function setArticleId(articleId) {
         currentArticleId = articleId;
     }
-    function ajaxGet(articleId) {
+    function createNewArticle() {
+        $('#myModal').modal('toggle');
+        $('#modalTitle').val("");
+        $('#modalAuthor').val("");
+        $('#modalContent').val("");
+        $('#modalType').val("");
+        setArticleId(-1);
+    }
+    function ajaxGetArticle(articleId) {
         $.getJSON("<%= request.getContextPath() %>/articles/get/" + articleId, function (data) {
             $('#modalTitle').val(data["title"]);
             $('#modalAuthor').val(data["author"]);
@@ -64,30 +72,54 @@
         })
         setArticleId(articleId);
     }
-    function ajaxPost() {
+    function ajaxPostArticle() {
         var title = $('#modalTitle').val();
         var author = $('#modalAuthor').val();
         var content = $('#modalContent').val();
         var type = $('#modalType').val();
-        $.ajax({
-            type: "POST",
-            url: "<%= request.getContextPath() %>/articles/edit/" + currentArticleId,
-            data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
-            success: function () {
-                $('#articleTitle-' + currentArticleId).text(title);
-                $('#articleAuthor-' + currentArticleId).text(author);
-                $('#articleContent-' + currentArticleId).text(content);
-                $('#articleTypeDiv-' + currentArticleId).removeClass("post-small")
-                        .removeClass("post-medium")
-                        .removeClass("post-large")
-                        .addClass("post-" + type);
-                $('#myModal').modal('toggle');
-            }
-        });
+        if (currentArticleId == -1) {
+            $.ajax({
+                type: "POST",
+                url: "<%= request.getContextPath() %>/articles/add",
+                data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
+                dataType: "json",
+                success: function (data) {
+                    setArticleId(data["id"]);
+                    var newArticleHtml = '<div id="articleTypeDiv-' + currentArticleId + '" class="post-' + type + '" data-toggle="modal" data-target="#myModal" onclick="ajaxGetArticle(' + currentArticleId + ')">\
+                            <div class="article"> \
+                            <h1 id="articleTitle-' + currentArticleId + '">' + title + '</h1>\
+                    <h5 id="articleAuthor-' + currentArticleId + '">' + author + '</h5>\
+                    <p id="articleContent-' + currentArticleId + '">' + content + '</p>\
+                    </div>\
+                    <div class="edit-buttons">\
+                            <a class="form-link" id="deleteArticle" href="/cms/articles/delete/' + currentArticleId + '">Delete</a>\
+                    </div>\
+                    </div>';
+                    $('#articlesContainer').append(newArticleHtml);
+                    $('#myModal').modal('toggle');
+                }
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "<%= request.getContextPath() %>/articles/edit/" + currentArticleId,
+                data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
+                success: function () {
+                    $('#articleTitle-' + currentArticleId).text(title);
+                    $('#articleAuthor-' + currentArticleId).text(author);
+                    $('#articleContent-' + currentArticleId).text(content);
+                    $('#articleTypeDiv-' + currentArticleId).removeClass("post-small")
+                            .removeClass("post-medium")
+                            .removeClass("post-large")
+                            .addClass("post-" + type);
+                    $('#myModal').modal('toggle');
+                }
+            });
+        }
     }
 </script>
 <div class="container-fluid">
-    <div class="row">
+    <div id="articlesContainer" class="row">
         <c:forEach items="${articles}" var="article">
 
             <c:set var="articleType" value="post-medium"></c:set>
@@ -99,7 +131,7 @@
         </c:if>
         <!-- div trigger modal -->
         <div id="articleTypeDiv-${article.id}" class="${articleType}" data-toggle="modal" data-target="#myModal"
-             onclick="ajaxGet(${article.id})">
+             onclick="ajaxGetArticle(${article.id})">
                 <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
             <div class="article">
                 <h1 id="articleTitle-${article.id}">${article.title}</h1>
@@ -136,7 +168,8 @@
                                 <option value="large">Large</option>
                             </select>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input type="button" value="Save changes" class="btn btn-primary" onclick="ajaxPost()"/>
+                            <input type="button" value="Save changes" class="btn btn-primary"
+                                   onclick="ajaxPostArticle()"/>
                         </div>
                     </div>
                 </div>
