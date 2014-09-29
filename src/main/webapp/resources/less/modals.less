@@ -1,0 +1,19 @@
+//
+// Cms modals
+// --------------------------------------------------
+.modal-open {
+  overflow: visible;
+}
+// Shell div to position the modal with bottom padding
+.modal-dialog {
+  width: 70%;
+}
+// Actual modal
+.modal-content {
+  background-color: @modal-content-bg;
+  border: 1px solid @modal-content-border-color;
+  border-radius: @border-radius-small;
+  border-bottom-right-radius: 50px;
+  .box-shadow(0 3px 9px rgba(0,0,0,.5));
+  background-clip: padding-box;
+}

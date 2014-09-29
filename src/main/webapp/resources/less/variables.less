@@ -64,26 +64,25 @@
 @padding-xs-vertical:       .1%;
 @padding-xs-horizontal:     .5%;
 
+@border-radius-base:        4px;
+@border-radius-large:       6px;
+@border-radius-small:       2px;
+
 
 //== Cms forms
-
 @input-border:                   thin none transparent;
 @input-border-left:              5px solid @gray;
 @input-border-focus:             @brand-primary;
-
 //** Placeholder text color
 @input-color-placeholder:        @gray-light;
-
 //** Default `.form-control` height
 @input-height-base:              @line-height-base;
 
 //== Cms grid system
-
 //** Padding between columns. Gets divided in half for the left and right.
 @grid-gutter-width:         1%;
+
 //== The Cms Navbar
-
-
 // Basics of a navbar
 @navbar-height:                    100%;
 @navbar-width:                     90%;
@@ -95,3 +94,22 @@
 
 @navbar-default-link-color:                #fff;
 @navbar-default-link-hover-color:          @gray-darker;
+
+//== Cms Modals
+//** Background color of modal content area
+@modal-content-bg:                             @gray-lighter;
+//** Modal content border color
+@modal-content-border-color:                   @gray-light;
+
+//** Modal backdrop background color
+@modal-backdrop-bg:           #000;
+//** Modal backdrop opacity
+@modal-backdrop-opacity:      .5;
+//** Modal header border color
+@modal-header-border-color:   #e5e5e5;
+//** Modal footer border color
+@modal-footer-border-color:   @modal-header-border-color;
+
+@modal-lg:                    900px;
+@modal-md:                    600px;
+@modal-sm:                    300px;
