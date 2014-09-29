@@ -36,22 +36,15 @@ public class ArticleController {
         return "articles";
     }
 
-    @RequestMapping(value = PATH_ARTICLES + "/add", method = RequestMethod.GET)
-    public String addArticle(ModelMap model) {
-        model.addAttribute(new Article());
-        setArticleSizes(model);
-        return "add";
-    }
-
     @RequestMapping(value = PATH_ARTICLES + "/add", method = RequestMethod.POST)
-    public String addArticleSubmit(@ModelAttribute("article") Article article, BindingResult result) {
-        //TODO date is hardcoded fix it
+    @ResponseBody
+    public String addArticleSubmit(@ModelAttribute("article") Article article, BindingResult result) throws JSONException {
         article.setDate(new Date());
         articleRepository.save(article);
-
-        return "redirect:/";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", "" + article.getId());
+        return "" + jsonObject;
     }
-
     @RequestMapping(PATH_ARTICLES + "/delete/{articleId}")
     public String deleteArticle(@PathVariable("articleId") Long articleId) {
         articleRepository.delete(articleRepository.findOne(articleId));
