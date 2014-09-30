@@ -43,8 +43,10 @@ public class ArticleController {
         articleRepository.save(article);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", "" + article.getId());
+        jsonObject.put("date", "" + article.getDate());
         return "" + jsonObject;
     }
+
     @RequestMapping(PATH_ARTICLES + "/delete/{articleId}")
     public String deleteArticle(@PathVariable("articleId") Long articleId) {
         articleRepository.delete(articleRepository.findOne(articleId));

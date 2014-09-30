@@ -88,7 +88,7 @@
                     var newArticleHtml = '<div id="articleTypeDiv-' + currentArticleId + '" class="post-' + type + '" data-toggle="modal" data-target="#myModal" onclick="ajaxGetArticle(' + currentArticleId + ')">\
                             <div class="article"> \
                             <h1 id="articleTitle-' + currentArticleId + '">' + title + '</h1>\
-                    <h5 id="articleAuthor-' + currentArticleId + '">' + author + '</h5>\
+                    <h5 id="articleAuthor-' + currentArticleId + '">By ' + author + ' published on ' + data["date"] + '</h5>\
                     <p id="articleContent-' + currentArticleId + '">' + content + '</p>\
                     </div>\
                     <div class="edit-buttons">\
@@ -106,7 +106,7 @@
                 data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
                 success: function () {
                     $('#articleTitle-' + currentArticleId).text(title);
-                    $('#articleAuthor-' + currentArticleId).text(author);
+                    $('#articleAuthor-' + currentArticleId).text("By "+ author);
                     $('#articleContent-' + currentArticleId).text(content);
                     $('#articleTypeDiv-' + currentArticleId).removeClass("post-small")
                             .removeClass("post-medium")
@@ -135,7 +135,7 @@
                 <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
             <div class="article">
                 <h1 id="articleTitle-${article.id}">${article.title}</h1>
-                <h5 id="articleAuthor-${article.id}">By ${article.author} published on TODO date</h5>
+                <h5 id="articleAuthor-${article.id}">By ${article.author} published on ${article.date}</h5>
 
                 <p id="articleContent-${article.id}">${article.content}</p>
             </div>
@@ -156,7 +156,7 @@
                                     aria-hidden="true">&times;</span><span
                                     class="sr-only">Close</span></button>
                             <h1 class="modal-title"><input type="text" id="modalTitle"/></h1>
-                            <h5 class="modal-title"><input path="author" id="modalAuthor"/></h5>
+                            <h5 class="modal-title">By <input path="author" id="modalAuthor"/></span></h5>
                         </div>
                         <div class="modal-body">
                             <p><textarea input type="text" id="modalContent"></textarea></p>
