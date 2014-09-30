@@ -60,13 +60,14 @@
         $('#modalTitle').val("");
         $('#modalAuthor').val("");
         $('#modalContent').val("");
-        $('#modalType').val("");
+        $('#modalType').val("small");
         setArticleId(-1);
     }
     function ajaxGetArticle(articleId) {
         $.getJSON("<%= request.getContextPath() %>/articles/get/" + articleId, function (data) {
             $('#modalTitle').val(data["title"]);
             $('#modalAuthor').val(data["author"]);
+            $('#modalDate').text(data["date"]);
             $('#modalContent').val(data["content"]);
             $('#modalType').val(data["type"]);
         })
@@ -104,11 +105,12 @@
                 type: "POST",
                 url: "<%= request.getContextPath() %>/articles/edit/" + currentArticleId,
                 data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
-                success: function () {
-                    $('#articleTitle-' + currentArticleId).text(title);
-                    $('#articleAuthor-' + currentArticleId).text("By "+ author);
-                    $('#articleContent-' + currentArticleId).text(content);
-                    $('#articleTypeDiv-' + currentArticleId).removeClass("post-small")
+                dataType: "json",
+                success: function (data) {
+                    $('#articleTitle-' + data["id"]).text(title);
+                    $('#articleAuthor-' + data["id"]).text("By "+ author+" published on "+data["date"]);
+                    $('#articleContent-' + data["id"]).text(content);
+                    $('#articleTypeDiv-' + data["id"]).removeClass("post-small")
                             .removeClass("post-medium")
                             .removeClass("post-large")
                             .addClass("post-" + type);
@@ -129,7 +131,7 @@
         <c:if test="${article.type == 'large'}">
             <c:set var="articleType" value="post-large"></c:set>
         </c:if>
-        <!-- div trigger modal -->
+        <!-- div triggering modal -->
         <div id="articleTypeDiv-${article.id}" class="${articleType}" data-toggle="modal" data-target="#myModal"
              onclick="ajaxGetArticle(${article.id})">
                 <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
@@ -156,7 +158,7 @@
                                     aria-hidden="true">&times;</span><span
                                     class="sr-only">Close</span></button>
                             <h1 class="modal-title"><input type="text" id="modalTitle"/></h1>
-                            <h5 class="modal-title">By <input path="author" id="modalAuthor"/></span></h5>
+                            <h5 class="modal-title">By <input path="author" id="modalAuthor"/> published on <span id="modalDate"></span></h5>
                         </div>
                         <div class="modal-body">
                             <p><textarea input type="text" id="modalContent"></textarea></p>

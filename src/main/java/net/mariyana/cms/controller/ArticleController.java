@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sun.org.mozilla.javascript.internal.json.JsonParser;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,14 +62,15 @@ public class ArticleController {
     }
 
     @RequestMapping(value = PATH_ARTICLES + "/edit/{articleId}", method = RequestMethod.POST)
-    public String editArticleSubmit(@PathVariable("articleId") Long articleId, @ModelAttribute("article") Article article, BindingResult result) {
+    @ResponseBody
+    public String editArticleSubmit(@PathVariable("articleId") Long articleId, @ModelAttribute("article") Article article, BindingResult result) throws JSONException {
         article.setId(articleId);
-//        article.setType("small");
-        //TODO date is hardcoded fix it
         article.setDate(new Date());
         articleRepository.save(article);
-
-        return "redirect:/";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", "" + article.getId());
+        jsonObject.put("date", "" + article.getDate());
+        return "" + jsonObject;
     }
 
     @RequestMapping(value = PATH_ARTICLES + "/get/{articleId}", method = RequestMethod.GET)
@@ -80,6 +82,7 @@ public class ArticleController {
             jsonObject.put("id", "" + requestedArticle.getId());
             jsonObject.put("title", "" + requestedArticle.getTitle());
             jsonObject.put("author", "" + requestedArticle.getAuthor());
+            jsonObject.put("date", "" + requestedArticle.getDate());
             jsonObject.put("content", "" + requestedArticle.getContent());
             jsonObject.put("type", "" + requestedArticle.getType());
             return "" + jsonObject;
@@ -98,4 +101,5 @@ public class ArticleController {
         articleSizes.put("large", "Large");
         model.addAttribute("articleSizes", articleSizes);
     }
+
 }

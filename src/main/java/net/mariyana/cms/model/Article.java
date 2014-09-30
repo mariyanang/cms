@@ -1,6 +1,7 @@
 package net.mariyana.cms.model;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name = "article")
@@ -32,7 +33,7 @@ public class Article {
         this.id = id;
     }
 
-    public String getType (){
+    public String getType() {
         return type;
     }
 
@@ -56,8 +57,10 @@ public class Article {
         this.author = author;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        String formattedDate = new SimpleDateFormat("dd MM yyyy").format(date);
+
+        return formattedDate;
     }
 
     public void setDate(Date date) {
