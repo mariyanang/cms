@@ -12,7 +12,7 @@
   min-width: 200px;
   right: -75%;
   top: 0;
-//  background-color: @navbar-default-bg;
+  //  background-color: @navbar-default-bg;
   background-image: url('http://mariyana.net/cms/img/vertical_stripes.png');
   background-size: 100% 100%;
   border: 0px solid transparent;
@@ -21,40 +21,44 @@
   text-align: right;
   z-index: @zindex-navbar;
   overflow: auto;
-  &:hover{
-    box-shadow:0 0 5px #ccc;
+  &:hover {
+    box-shadow: 0 0 5px #ccc;
     right: 0;
   }
   .transition (all 0.5s cubic-bezier(0.165, 0.63, 0.14, 0.82) 0s);
 
   @media (min-width: @screen-sm +1),(min-width: @screen-md) {
-      width: 35%;
-      right: -25%;
-    }
+    width: 35%;
+    right: -25%;
+  }
   @media (min-width: @screen-lg) {
-      width: 20%;
-      right: -15%;
-    }
+    width: 20%;
+    right: -15%;
+  }
 }
-.navbar a,.navbar p,#footer > h3, #footer > h5 {
+
+.navbar a, .navbar p, #footer > h3, #footer > h5 {
   margin: 0;
   padding: 0;
   color: #fff;
-  @media (max-width: @screen-xs), (max-width: @screen-sm) and (orientation:landscape){
+  @media (max-width: @screen-xs), (max-width: @screen-sm) and (orientation: landscape) {
     .textLandscape();
   }
 }
-.navbar a{
+
+.navbar a {
   color: @navbar-default-link-color;
-  &:hover{
+  &:hover {
     color: @navbar-default-link-hover-color;
   }
   .transition(color .25s ease-in-out);
 }
-.navbar p{
+
+.navbar p {
   color: @gray-darker;
 }
-.navbar > .container-fluid{
+
+.navbar > .container-fluid {
   position: relative;
   width: 75%;
   left: 20%;
@@ -74,7 +78,8 @@
     right: 5%;
   }
 }
-.nav-row{
+
+.nav-row {
   position: absolute;
   height: 20%;
   overflow: auto;
@@ -82,10 +87,11 @@
   right: 2%;
 }
 
-#login{
+#login {
   top: 20%;
 }
-#footer{
+
+#footer {
   font-style: italic;
   text-align: right;
   top: 80%;

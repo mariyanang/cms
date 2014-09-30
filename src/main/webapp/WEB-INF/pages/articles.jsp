@@ -137,9 +137,11 @@
                 <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
             <div class="article">
                 <h1 id="articleTitle-${article.id}">${article.title}</h1>
+                <br/>
                 <h5 id="articleAuthor-${article.id}">By ${article.author} published on ${article.date}</h5>
-
+                <br/>
                 <p id="articleContent-${article.id}">${article.content}</p>
+                <br/>
             </div>
             <div class="edit-buttons">
                 <a class="form-link" id="deleteArticle"
@@ -157,21 +159,21 @@
                             <button type="button" class="close" data-dismiss="modal"><span
                                     aria-hidden="true">&times;</span><span
                                     class="sr-only">Close</span></button>
-                            <h1 class="modal-title"><input type="text" id="modalTitle"/></h1>
-                            <h5 class="modal-title">By <input path="author" id="modalAuthor"/> published on <span id="modalDate"></span></h5>
+                            <h1 class="modal-title"><input type="text" id="modalTitle" class="form-control form-control-focus"/></h1>
+                            <h5 class="modal-title">By <input path="author" id="modalAuthor" class="form-control form-control-focus"/> published on <span id="modalDate"></span></h5>
                         </div>
                         <div class="modal-body">
-                            <p><textarea input type="text" id="modalContent"></textarea></p>
+                            <textarea type="text" id="modalContent" class="form-control form-control-focus"></textarea>
                         </div>
                         <div class="modal-footer">
-                            <select class="btn btn-default dropdown-toggle" id="modalType">
+                            <select class="btn btn-default" id="modalType">
                                 <option value="small">Small</option>
                                 <option value="medium">Medium</option>
                                 <option value="large">Large</option>
                             </select>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input type="button" value="Save changes" class="btn btn-primary"
-                                   onclick="ajaxPostArticle()"/>
+                            <button type="button" class="btn btn-primary"
+                                   onclick="ajaxPostArticle()">Save changes</button>
                         </div>
                     </div>
                 </div>

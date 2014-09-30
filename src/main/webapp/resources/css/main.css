@@ -2392,6 +2392,7 @@ output {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   font-style: normal;
   box-shadow: none;
+  max-width: 90%;
 }
 .form-control:focus {
   border-color: #e64c66;
@@ -6270,7 +6271,6 @@ button.close {
   height: auto;
   padding: 0% 0% 5% 0%;
   margin-bottom: 5%;
-  border-bottom: inset #fafafa 50px;
   border-width: 0 0 0 4px;
   border-radius: 2px;
   border-bottom-right-radius: 50px;
@@ -6305,7 +6305,6 @@ button.close {
     height: auto;
     padding: 0% 0% 5% 0%;
     margin-bottom: 5%;
-    border-bottom: inset #fafafa 50px;
   }
 }
 @media (min-width: 1200px) and (min-width: 992px) {
@@ -6335,7 +6334,6 @@ button.close {
   height: auto;
   padding: 0% 0% 5% 0%;
   margin-bottom: 5%;
-  border-bottom: inset #fafafa 50px;
   border-width: 0 0 0 4px;
   border-radius: 2px;
   border-bottom-right-radius: 50px;
@@ -6369,7 +6367,6 @@ button.close {
   height: auto;
   padding: 0% 0% 5% 0%;
   margin-bottom: 5%;
-  border-bottom: inset #fafafa 50px;
   border-width: 0 0 0 4px;
   border-radius: 2px;
   border-bottom-right-radius: 50px;
@@ -6401,6 +6398,9 @@ button.close {
 .edit-buttons {
   height: 50px;
   background-color: rgba(0, 0, 0, 0.1);
+}
+.no-borders {
+  border: thin none transparent;
 }
 html {
   font-size: 100%;
@@ -6469,6 +6469,7 @@ h6,
 .h5,
 .h6 {
   font-weight: 100;
+  margin: 0 5px;
 }
 h4,
 .h4 {
@@ -6485,8 +6486,12 @@ h6,
   font-family: "Open Sans";
   font-style: italic;
 }
+p {
+  margin: 0 5px;
+}
 .form-control {
   height: 2em;
+  max-width: 90%;
   padding: 0% 4%;
   margin: 2% 2%;
   font-style: italic;
@@ -6495,7 +6500,7 @@ h6,
   border-bottom: thin none transparent;
   border-left: 5px solid #aaaaaa;
   box-shadow: none;
-  border-radius: 0px;
+  border-radius: 2px;
   -webkit-transition: border-color ease-in-out 0.25s;
   -khtml-transition: border-color ease-in-out 0.25s;
   -moz-transition: border-color ease-in-out 0.25s;
@@ -6506,6 +6511,10 @@ h6,
 .form-control-focus {
   font-style: normal;
   box-shadow: none;
+  max-width: 90%;
+}
+textarea {
+  height: 8.399999999999999em;
 }
 .navbar {
   position: fixed;
@@ -6639,4 +6648,20 @@ h6,
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
+}
+.modal-footer {
+  text-align: center;
+}
+.modal-content input,
+.modal-content textarea {
+  background-color: #fafafa;
+}
+.btn {
+  border: 0 solid transparent;
+  border-radius: 2px;
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+.btn-primary {
+  box-shadow: none;
 }

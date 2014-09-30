@@ -2,114 +2,113 @@
 // The Cms variables
 // --------------------------------------------------
 
-
 //== Cms colors
 
-@gray-darker:            (#444449);
-@gray-dark:              lighten(@gray-darker, 20%);   // #646469
-@gray:                   (#aaa);
-@gray-light:             (#ddd);
-@gray-lighter:           (#fafafa);
+@gray-darker: (#444449);
+@gray-dark: lighten(@gray-darker, 20%);
+// #646469
+@gray: (#aaa);
+@gray-light: (#ddd);
+@gray-lighter: (#fafafa);
 
-@brand-primary:         #e64c66;
-@brand-success:         #1bbc99;
-@brand-info:            #ff9da4;
-@brand-warning:         #9BDCB5;
+@brand-primary: #e64c66;
+@brand-success: #1bbc99;
+@brand-info: #ff9da4;
+@brand-warning: #9BDCB5;
 
 //== Cms scaffolding
 
-@body-bg:               @gray-lighter;
-@text-color:            @gray-darker;
-@link-color:            @gray;
-@link-hover-color:      @gray-darker;
+@body-bg: @gray-lighter;
+@text-color: @gray-darker;
+@link-color: @gray;
+@link-hover-color: @gray-darker;
 
 //== Cms typography
 @font-size-root: 16px;
 @font-unit: 0em;
 
-@font-family-sans-serif:  "Open Sans";
-@font-family-serif:       "Roboto Slab";
+@font-family-sans-serif: "Open Sans";
+@font-family-serif: "Roboto Slab";
 
-@font-size-base:          1 + @font-unit;
-@font-size-large:         @font-size-base * 1.5;
-@font-size-small:         @font-size-base * 0.8;
+@font-size-base: 1 + @font-unit;
+@font-size-large: @font-size-base * 1.5;
+@font-size-small: @font-size-base * 0.8;
 
-@font-size-h1:            @font-size-base * 3;
-@font-size-h2:            @font-size-base * 2.25;
-@font-size-h3:            @font-size-base * 1.6;
-@font-size-h4:            @font-size-base * 1.25;
-@font-size-h5:            @font-size-base;
-@font-size-h6:            @font-size-small;
+@font-size-h1: @font-size-base * 3;
+@font-size-h2: @font-size-base * 2.25;
+@font-size-h3: @font-size-base * 1.6;
+@font-size-h4: @font-size-base * 1.25;
+@font-size-h5: @font-size-base;
+@font-size-h6: @font-size-small;
 
-@line-height-base:        @font-size-base * 1.4; // 1em font and 1.4ems line height
-@line-height-computed:    @line-height-base;
+@line-height-base: @font-size-base * 1.4;
+// 1em font and 1.4ems line height
+@line-height-computed: @line-height-base;
 
-@headings-font-family:    @font-family-serif;
-@headings-font-weight:    100;
-@headings-line-height:    @line-height-base;
-@headings-color:          inherit;
-
+@headings-font-family: @font-family-serif;
+@headings-font-weight: 100;
+@headings-line-height: @line-height-base;
+@headings-color: inherit;
 
 //== Cms components
 
-@padding-base-vertical:     .5%;
-@padding-base-horizontal:   1%;
+@padding-base-vertical: .5%;
+@padding-base-horizontal: 1%;
 
-@padding-large-vertical:    1%;
-@padding-large-horizontal:  1.5%;
+@padding-large-vertical: 1%;
+@padding-large-horizontal: 1.5%;
 
-@padding-small-vertical:    .5%;
-@padding-small-horizontal:  1%;
+@padding-small-vertical: .5%;
+@padding-small-horizontal: 1%;
 
-@padding-xs-vertical:       .1%;
-@padding-xs-horizontal:     .5%;
+@padding-xs-vertical: .1%;
+@padding-xs-horizontal: .5%;
 
-@border-radius-base:        4px;
-@border-radius-large:       6px;
-@border-radius-small:       2px;
-
+@border-radius-base: 4px;
+@border-radius-large: 6px;
+@border-radius-small: 2px;
 
 //== Cms forms
-@input-border:                   thin none transparent;
-@input-border-left:              5px solid @gray;
-@input-border-focus:             @brand-primary;
+@input-border: thin none transparent;
+@input-border-left: 5px solid @gray;
+@input-border-focus: @brand-primary;
 //** Placeholder text color
-@input-color-placeholder:        @gray-light;
+@input-color-placeholder: @gray-light;
 //** Default `.form-control` height
-@input-height-base:              @line-height-base;
+@input-height-base: @line-height-base;
 
 //== Cms grid system
 //** Padding between columns. Gets divided in half for the left and right.
-@grid-gutter-width:         1%;
+@grid-gutter-width: 1%;
 
 //== The Cms Navbar
 // Basics of a navbar
-@navbar-height:                    100%;
-@navbar-width:                     90%;
-@navbar-margin-bottom:             0;
-@navbar-border-radius:             0;
+@navbar-height: 100%;
+@navbar-width: 90%;
+@navbar-margin-bottom: 0;
+@navbar-border-radius: 0;
 
-@navbar-default-bg:                @gray-lighter;
-@navbar-default-border:            1px solid transparent;
+@navbar-default-bg: @gray-lighter;
+@navbar-default-border: 1px solid transparent;
 
-@navbar-default-link-color:                #fff;
-@navbar-default-link-hover-color:          @gray-darker;
+@navbar-default-link-color: #fff;
+@navbar-default-link-hover-color: @gray-darker;
 
 //== Cms Modals
 //** Background color of modal content area
-@modal-content-bg:                             @gray-lighter;
+@modal-content-bg: @gray-lighter;
 //** Modal content border color
-@modal-content-border-color:                   @gray-light;
+@modal-content-border-color: @gray-light;
 
 //** Modal backdrop background color
-@modal-backdrop-bg:           #000;
+@modal-backdrop-bg: #000;
 //** Modal backdrop opacity
-@modal-backdrop-opacity:      .5;
+@modal-backdrop-opacity: .5;
 //** Modal header border color
-@modal-header-border-color:   #e5e5e5;
+@modal-header-border-color: #e5e5e5;
 //** Modal footer border color
-@modal-footer-border-color:   @modal-header-border-color;
+@modal-footer-border-color: @modal-header-border-color;
 
-@modal-lg:                    900px;
-@modal-md:                    600px;
-@modal-sm:                    300px;
+@modal-lg: 900px;
+@modal-md: 600px;
+@modal-sm: 300px;
