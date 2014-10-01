@@ -37,8 +37,6 @@
         <ul id="master-drop">
             <li><a class="form-link" id="signIn-link" href="#user">Sign In</a></li>
             <li><a class="form-link" id="signUp-link" href="#new-user">Sign Up</a></li>
-            <li><a class="form-link" id="addArticle" onclick="createNewArticle()">Add article</a>
-            </li>
         </ul>
         <input class="form-control form-control-focus" id="user-mail" type="email" placeholder="Your email"
                name="user-email" autofocus="true"/>
@@ -92,8 +90,10 @@
                     <h5 id="articleAuthor-' + currentArticleId + '">By ' + author + ' published on ' + data["date"] + '</h5>\
                     <p id="articleContent-' + currentArticleId + '">' + content + '</p>\
                     </div>\
-                    <div class="edit-buttons">\
-                            <a class="form-link" id="deleteArticle" href="/cms/articles/delete/' + currentArticleId + '">Delete</a>\
+                    <div class="modal-footer">\
+                            <a class="form-link" id="deleteArticle" href="/cms/articles/delete/' + currentArticleId + '">\
+                            <button type="button" class="btn btn-primary">Delete</button>\
+                            </a>\
                     </div>\
                     </div>';
                     $('#articlesContainer').append(newArticleHtml);
@@ -108,7 +108,7 @@
                 dataType: "json",
                 success: function (data) {
                     $('#articleTitle-' + data["id"]).text(title);
-                    $('#articleAuthor-' + data["id"]).text("By "+ author+" published on "+data["date"]);
+                    $('#articleAuthor-' + data["id"]).text("By " + author + " published on " + data["date"]);
                     $('#articleContent-' + data["id"]).text(content);
                     $('#articleTypeDiv-' + data["id"]).removeClass("post-small")
                             .removeClass("post-medium")
@@ -121,63 +121,75 @@
     }
 </script>
 <div class="container-fluid">
+    <a class="form-link" id="addArticle" onclick="createNewArticle()"><h1>+ Add article</h1></a>
+
     <div id="articlesContainer" class="row">
         <c:forEach items="${articles}" var="article">
-
             <c:set var="articleType" value="post-medium"></c:set>
-        <c:if test="${article.type == 'small'}">
-            <c:set var="articleType" value="post-small"></c:set>
-        </c:if>
-        <c:if test="${article.type == 'large'}">
-            <c:set var="articleType" value="post-large"></c:set>
-        </c:if>
-        <!-- div triggering modal -->
-        <div id="articleTypeDiv-${article.id}" class="${articleType}" data-toggle="modal" data-target="#myModal"
-             onclick="ajaxGetArticle(${article.id})">
-                <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
-            <div class="article">
-                <h1 id="articleTitle-${article.id}">${article.title}</h1>
-                <br/>
-                <h5 id="articleAuthor-${article.id}">By ${article.author} published on ${article.date}</h5>
-                <br/>
-                <p id="articleContent-${article.id}">${article.content}</p>
-                <br/>
-            </div>
-            <div class="edit-buttons">
-                <a class="form-link" id="deleteArticle"
-                   href="<%= request.getContextPath() %>/articles/delete/${article.id}">Delete</a>
-            </div>
-        </div>
-        </c:forEach>
-        <!-- Modal -->
-        <form method="post" id="articleForm">
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span
-                                    aria-hidden="true">&times;</span><span
-                                    class="sr-only">Close</span></button>
-                            <h1 class="modal-title"><input type="text" id="modalTitle" class="form-control form-control-focus"/></h1>
-                            <h5 class="modal-title">By <input path="author" id="modalAuthor" class="form-control form-control-focus"/> published on <span id="modalDate"></span></h5>
-                        </div>
-                        <div class="modal-body">
-                            <textarea type="text" id="modalContent" class="form-control form-control-focus"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <select class="btn btn-default" id="modalType">
-                                <option value="small">Small</option>
-                                <option value="medium">Medium</option>
-                                <option value="large">Large</option>
-                            </select>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"
-                                   onclick="ajaxPostArticle()">Save changes</button>
-                        </div>
-                    </div>
+            <c:if test="${article.type == 'small'}">
+                <c:set var="articleType" value="post-small"></c:set>
+            </c:if>
+            <c:if test="${article.type == 'large'}">
+                <c:set var="articleType" value="post-large"></c:set>
+            </c:if>
+            <!-- div triggering modal -->
+            <div id="articleTypeDiv-${article.id}" class="${articleType}" data-toggle="modal" data-target="#myModal"
+                 onclick="ajaxGetArticle(${article.id})">
+                    <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
+                <div class="article">
+                    <br/>
+
+                    <h1 id="articleTitle-${article.id}">${article.title}</h1>
+                    <br/>
+                    <h5 id="articleAuthor-${article.id}">By ${article.author} published on ${article.date}</h5>
+                    <br/>
+
+                    <p id="articleContent-${article.id}">${article.content}</p>
+                    <br/>
+                </div>
+                <div class="modal-footer">
+                    <a class="form-link" id="deleteArticle"
+                       href="<%= request.getContextPath() %>/articles/delete/${article.id}">
+                        <button type="button" class="btn btn-primary">Delete</button>
+                    </a>
                 </div>
             </div>
-        </form>
+        </c:forEach>
+    </div>
+</div>
+<!-- Modal -->
+<form method="post" id="articleForm">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
+                    <h1 class="modal-title"><input type="text" id="modalTitle"
+                                                   class="form-control form-control-focus"/></h1>
+                    <h5 class="modal-title">By <input path="author" id="modalAuthor"
+                                                      class="form-control form-control-focus"/> published on
+                        <span id="modalDate"></span></h5>
+                </div>
+                <div class="modal-body">
+                    <textarea type="text" id="modalContent" class="form-control form-control-focus"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <select class="btn btn-default" id="modalType">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="ajaxPostArticle()">Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 </body>
 </html>

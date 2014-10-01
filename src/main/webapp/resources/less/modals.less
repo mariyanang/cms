@@ -6,7 +6,11 @@
 }
 // Shell div to position the modal with bottom padding
 .modal-dialog {
-  width: 70%;
+  width: 90%;
+  @media (min-width: @screen-md-min),(min-width: @screen-lg-min) {
+    width: 70%;
+  }
+
 }
 // Actual modal
 .modal-content {
@@ -18,9 +22,12 @@
   background-clip: padding-box;
 }
 // Footer (for actions)
-.modal-footer {
+.modal-header,.modal-footer {
   text-align: center; // center align buttons
 }
 .modal-content input, .modal-content textarea{
   background-color: @gray-lighter;
+}
+.modal-content textarea{
+  height: 20rem;
 }
