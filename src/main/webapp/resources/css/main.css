@@ -6718,6 +6718,7 @@ textarea {
 }
 #login {
   top: 20%;
+  height: 60%;
 }
 #footer {
   font-style: italic;

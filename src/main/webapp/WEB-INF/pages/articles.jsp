@@ -34,14 +34,47 @@
         <p>Share something stunning about you</p>
     </div>
     <div class="nav-row" id="login">
-        <ul id="master-drop">
-            <li><a class="form-link" id="signIn-link" href="#user">Sign In</a></li>
-            <li><a class="form-link" id="signUp-link" href="#new-user">Sign Up</a></li>
-        </ul>
-        <input class="form-control form-control-focus" id="user-mail" type="email" placeholder="Your email"
-               name="user-email" autofocus="true"/>
-        <input class="form-control form-control-focus" id="user-pass" type="password" placeholder="Password"
-               name="user-password"/>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="form-link" id="login-link"
+                       data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Log in
+                    </a>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <input class="form-control form-control-focus" id="login-user-mail" type="email"
+                               placeholder="Your email"
+                               name="user-email" autofocus="true"/>
+                        <input class="form-control form-control-focus" id="login-user-pass" type="password"
+                               placeholder="Password"
+                               name="user-password"/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                        <a class="form-link" id="signup-link" data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseTwo">
+                            Sign Up
+                        </a>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <input class="form-control form-control-focus" id="signup-user-name" type="email"
+                               placeholder="Your email"
+                               name="user-email" autofocus="true"/>
+                        <input class="form-control form-control-focus" id="signup-user-mail" type="email"
+                               placeholder="Your email"
+                               name="user-email" autofocus="true"/>
+                        <input class="form-control form-control-focus" id="signup-user-pass" type="password"
+                               placeholder="Password"
+                               name="user-password"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <footer class="nav-row" id="footer">
         <h3>The content management system</h3>

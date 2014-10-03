@@ -9,11 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sun.org.mozilla.javascript.internal.json.JsonParser;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -33,7 +29,6 @@ public class ArticleController {
     @RequestMapping(value = PATH_ARTICLES, method = RequestMethod.GET)
     public String listArticles(ModelMap model) {
         model.addAttribute("articles", articleRepository.findAll());
-        model.addAttribute("article", articleRepository.findAll().get(0));
         return "articles";
     }
 
@@ -52,13 +47,6 @@ public class ArticleController {
     public String deleteArticle(@PathVariable("articleId") Long articleId) {
         articleRepository.delete(articleRepository.findOne(articleId));
         return "redirect:/";
-    }
-
-    @RequestMapping(PATH_ARTICLES + "/edit/{articleId}")
-    public String editArticle(@PathVariable("articleId") Long articleId, ModelMap model) {
-        model.addAttribute(articleRepository.findOne(articleId));
-        setArticleSizes(model);
-        return "add";
     }
 
     @RequestMapping(value = PATH_ARTICLES + "/edit/{articleId}", method = RequestMethod.POST)
