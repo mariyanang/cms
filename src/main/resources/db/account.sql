@@ -1,10 +1,10 @@
-CREATE TABLE  `cms`.`account` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `firstName` VARCHAR(10) NOT NULL,
-  `lastName` VARCHAR(20) NOT NULL,
-  `email` VARCHAR(50) NOT NULL,
+CREATE TABLE `account` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+  UNIQUE KEY `unique email` (`email`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
