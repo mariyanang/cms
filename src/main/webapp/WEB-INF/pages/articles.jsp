@@ -25,6 +25,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://mariyana.net/cms/js/bootstrap.min.js"></script>
+    <%--<script src="http://mariyana.net/cms/js/main.js"></script>--%>
 </head>
 <body>
 <nav class="navbar">
@@ -44,28 +45,31 @@
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <input class="form-control form-control-focus" id="login-user-mail" type="email"
+                        <input class="form-control form-control-focus" id="loginUserMail" type="email"
                                placeholder="Your email"
                                name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="login-user-pass" type="password"
+                        <input class="form-control form-control-focus" id="loginUserPass" type="password"
                                placeholder="Password"
                                name="user-password"/>
+                        <button type="button" class="btn btn-primary"
+                                onclick="ajaxLogin()">Log in
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                        <a class="form-link" id="signup-link" data-toggle="collapse" data-parent="#accordion"
-                           href="#collapseTwo">
-                            Sign Up
-                        </a>
+                    <a class="form-link" id="signup-link" data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseTwo">
+                        Sign Up
+                    </a>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <input class="form-control form-control-focus" id="signup-user-name" type="email"
-                               placeholder="Your email"
+                        <input class="form-control form-control-focus" id="signup-user-name" type="text"
+                               placeholder="Your name"
                                name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="signup-user-mail" type="email"
+                        <input class="form-control form-control-focus" id="signup-user-mail" type="text"
                                placeholder="Your email"
                                name="user-email" autofocus="true"/>
                         <input class="form-control form-control-focus" id="signup-user-pass" type="password"
@@ -82,6 +86,24 @@
     </footer>
 </nav>
 <script>
+    function ajaxLogin() {
+        var email = $('#loginUserMail').val();
+        var pass = $('#loginUserPass').val();
+        $.ajax({
+            type: "POST",
+            url: "<%= request.getContextPath() %>/login/",
+            data: "email=" + email + "&password=" + pass,
+            dataType: "json",
+            success: function (data) {
+                if (data["result"] == "ok") {
+                    alert("Login successful.");
+                } else {
+                    alert("Incorrect email or password.");
+                }
+            }
+        });
+    }
+
     var currentArticleId;
     function setArticleId(articleId) {
         currentArticleId = articleId;
@@ -99,7 +121,7 @@
             $('#modalTitle').val(data["title"]);
             $('#modalAuthor').val(data["author"]);
             $('#modalDate').text(data["date"]);
-            $('#modalContent').val(data["content"]);
+            $('#modalContent').val(data["content"].replace(/<br\/>/g,"\n"));
             $('#modalType').val(data["type"]);
         })
         setArticleId(articleId);
@@ -107,7 +129,7 @@
     function ajaxPostArticle() {
         var title = $('#modalTitle').val();
         var author = $('#modalAuthor').val();
-        var content = $('#modalContent').val();
+        var content = $('#modalContent').val().replace(/\n/g,"<br/>");
         var type = $('#modalType').val();
         if (currentArticleId == -1) {
             $.ajax({
@@ -120,7 +142,9 @@
                     var newArticleHtml = '<div id="articleTypeDiv-' + currentArticleId + '" class="post-' + type + '" data-toggle="modal" data-target="#myModal" onclick="ajaxGetArticle(' + currentArticleId + ')">\
                             <div class="article"> \
                             <h1 id="articleTitle-' + currentArticleId + '">' + title + '</h1>\
+                    <br/>\
                     <h5 id="articleAuthor-' + currentArticleId + '">By ' + author + ' published on ' + data["date"] + '</h5>\
+                    <br/>\
                     <p id="articleContent-' + currentArticleId + '">' + content + '</p>\
                     </div>\
                     <div class="modal-footer">\
@@ -142,7 +166,7 @@
                 success: function (data) {
                     $('#articleTitle-' + data["id"]).text(title);
                     $('#articleAuthor-' + data["id"]).text("By " + author + " published on " + data["date"]);
-                    $('#articleContent-' + data["id"]).text(content);
+                    $('#articleContent-' + data["id"]).html(content);
                     $('#articleTypeDiv-' + data["id"]).removeClass("post-small")
                             .removeClass("post-medium")
                             .removeClass("post-large")

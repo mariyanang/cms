@@ -21,21 +21,21 @@
             <h1>Users</h1>
             <form:form method="post" action="/cms/users" modelAttribute="user">
             <div class="control-group">
-                <form:label cssClass="control-label" path="firstName">First Name:</form:label>
+                <form:label cssClass="control-label" path="name">Name:</form:label>
                 <div class="controls">
-                    <form:input path="firstName"/>
-                </div>
-            </div>
-            <div class="control-group">
-                <form:label cssClass="control-label" path="lastName">Last Name:</form:label>
-                <div class="controls">
-                    <form:input path="lastName"/>
+                    <form:input path="name"/>
                 </div>
             </div>
             <div class="control-group">
                 <form:label cssClass="control-label" path="email">Email:</form:label>
                 <div class="controls">
                     <form:input path="email"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <form:label cssClass="control-label" path="password">Password:</form:label>
+                <div class="controls">
+                    <form:input path="password"/>
                 </div>
             </div>
             <div class="control-group">
@@ -46,22 +46,25 @@
             </div>
 
             <c:if test="${!empty users}">
-                <h3>Users</h3>
+                <h3>Users data</h3>
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>&nbsp;</th>
+                        <th>Password</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${users}" var="user">
                         <tr>
-                            <td>${user.lastName}, ${user.firstName}</td>
+                            <td>${user.name}</td>
                             <td>${user.email}</td>
+                            <td>${user.password}</td>
                             <td>
-                                <form action="/cms/users/delete/${user.id}"><input type="submit" class="btn btn-danger btn-mini" value="Delete"/></form>
+                                <form action="/cms/users/delete/${user.id}"><input type="submit"
+                                                                                   class="btn btn-danger btn-mini"
+                                                                                   value="Delete"/></form>
                             </td>
                         </tr>
                     </c:forEach>
