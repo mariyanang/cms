@@ -24,22 +24,27 @@ public class UserController {
         return new User();
     }
 
-    @RequestMapping(value = PATH_USERS, method = RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public String addUser(@ModelAttribute("user") User user, BindingResult result) {
+    public String signup(@RequestParam String name, @RequestParam String email, @RequestParam String password) throws JSONException {
+        String result = "not ok";
+        JSONObject jsonObject = new JSONObject();
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+
         List<User> users = userRepository.findAll();
         for (User currentUser : users) {
-            if (currentUser.getName().equals(user.getName())) {
-                return "User with this name already exists";
-            } else if (currentUser.getEmail().equals(user.getEmail())) {
-                return "User with this email already exists";
-            } else if (currentUser.getPassword().equals(user.getPassword())) {
-                return "The worst...wrong password";
+            if (currentUser.getEmail().equals(user.getEmail())) {
+                jsonObject.put("result", "" + result);
+                return "" + jsonObject;
             }
-            break;
         }
         userRepository.save(user);
-        return "New account created!";
+        result = "ok";
+        jsonObject.put("result", "" + result);
+        return "" + jsonObject;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

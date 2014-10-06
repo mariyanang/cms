@@ -66,15 +66,18 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <input class="form-control form-control-focus" id="signup-user-name" type="text"
+                        <input class="form-control form-control-focus" id="signupUserName" type="text"
                                placeholder="Your name"
                                name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="signup-user-mail" type="text"
+                        <input class="form-control form-control-focus" id="signupUserMail" type="text"
                                placeholder="Your email"
                                name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="signup-user-pass" type="password"
+                        <input class="form-control form-control-focus" id="signupUserPass" type="password"
                                placeholder="Password"
                                name="user-password"/>
+                        <button type="button" class="btn btn-primary"
+                                onclick="ajaxSignup()">Sign up
+                        </button>
                     </div>
                 </div>
             </div>
@@ -86,6 +89,25 @@
     </footer>
 </nav>
 <script>
+    function ajaxSignup(){
+        var name = $('#signupUserName').val();
+        var email = $('#signupUserMail').val();
+        var pass = $('#signupUserPass').val();
+        $.ajax({
+            type: "POST",
+            url: "<%= request.getContextPath() %>/signup/",
+            data: "name=" + name + "&email=" + email + "&password=" + pass,
+            dataType: "json",
+            success: function (data) {
+                if (data["result"] == "ok") {
+                    alert("Sign up successful");
+                } else {
+                    alert("User already exists");
+                }
+            }
+        });
+    }
+
     function ajaxLogin() {
         var email = $('#loginUserMail').val();
         var pass = $('#loginUserPass').val();
