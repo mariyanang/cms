@@ -52,8 +52,8 @@ public class UserController {
             if (currentUser.getEmail().equals(email) &&
                     currentUser.getPassword().equals(password)) {
                 result = "ok";
+                break;
             }
-            break;
         }
         jsonObject.put("result", "" + result);
         return "" + jsonObject;
