@@ -35,53 +35,44 @@
         <p>Share something stunning about you</p>
     </div>
     <div class="nav-row" id="login">
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a class="form-link" id="login-link"
-                       data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        Log in
-                    </a>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <input class="form-control form-control-focus" id="loginUserMail" type="email"
-                               placeholder="Your email"
-                               name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="loginUserPass" type="password"
-                               placeholder="Password"
-                               name="user-password"/>
-                        <button type="button" class="btn btn-primary"
-                                onclick="ajaxLogin()">Log in
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <a class="form-link" id="signup-link" data-toggle="collapse" data-parent="#accordion"
-                       href="#collapseTwo">
-                        Sign Up
-                    </a>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <input class="form-control form-control-focus" id="signupUserName" type="text"
-                               placeholder="Your name"
-                               name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="signupUserMail" type="text"
-                               placeholder="Your email"
-                               name="user-email" autofocus="true"/>
-                        <input class="form-control form-control-focus" id="signupUserPass" type="password"
-                               placeholder="Password"
-                               name="user-password"/>
-                        <button type="button" class="btn btn-primary"
-                                onclick="ajaxSignup()">Sign up
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <a class="form-link" id="loginLink">Log in
+        </a>
+        <span> | </span>
+        <a class="form-link" id="signupLink">Sign Up
+        </a>
+
+        <input class="form-control form-control-focus" id="userEmail" type="email"
+               placeholder="Email"
+               name="user-email" autofocus="true"/>
+        <div id="userEmailError" class="errorBox">Email should contain @</div>
+        <div id="userLoginError" class="errorBox">Incorrect email or password</div>
+        <div id="userSignupError" class="errorBox">Email already exists</div>
+
+        <input class="form-control form-control-focus" id="userPass" type="password"
+               placeholder="Password"
+               name="user-password"/>
+        <div id="userPassError" class="errorBox">Password should be between 5-20 characters</div>
+
+        <input class="form-control form-control-focus" id="confirmUserPass" type="password"
+               placeholder="Confirm Password"
+               name="user-password"/>
+        <div id="userConfirmPassError" class="errorBox">Passwords don't match</div>
+
+        <input class="form-control form-control-focus" id="userName" type="text"
+               placeholder="Name"
+               name="user-email" autofocus="true"/>
+        <div id="userNameError" class="errorBox">Name should be between 5-20 characters</div>
+
+        <div id="userSignupSuccess" class="errorBox">Welcome, writer!</div>
+        <button type="button" class="btn btn-primary" id="loginBtn"
+                onclick="ajaxLogin()">Log in
+        </button>
+
+        <button type="button" class="btn btn-primary" id="signupBtn"
+                onclick="ajaxSignup()">Sign up
+        </button>
+
     </div>
     <footer class="nav-row" id="footer">
         <h3>The content management system</h3>
@@ -89,28 +80,106 @@
     </footer>
 </nav>
 <script>
-    function ajaxSignup(){
-        var name = $('#signupUserName').val();
-        var email = $('#signupUserMail').val();
-        var pass = $('#signupUserPass').val();
+    $("#loginLink").click(function () {
+        $('#confirmUserPass').hide();
+        $('#userName').hide();
+        $('#signupBtn').hide();
+        $('#userEmail').show();
+        $('#userPass').show();
+        $('#loginBtn').show();
+    });
+    $("#signupLink").click(function () {
+        $('#loginBtn').hide();
+        $("#userEmail").show();
+        $('#userPass').show();
+        $('#confirmUserPass').show();
+        $('#userName').show();
+        $('#signupBtn').show();
+    });
+    function isValidEmail(email) {
+        if (!email.match("@") || email.length > 50) {
+            $('#userEmailError').show();
+            return false;
+        } else {
+            $('#userEmailError').hide();
+            return true;
+        }
+
+    }
+    function isValidPass(pass) {
+        if (pass.length < 5 || pass.length > 20) {
+            $('#userPassError').show();
+            return false;
+        } else {
+            $('#userPassError').hide();
+            return true;
+        }
+    }
+    function isValidConfirmPass(pass, confirmPass) {
+        if (confirmPass != pass) {
+            $('#userConfirmPassError').show();
+            return false;
+        } else {
+            $('#userConfirmPassError').hide();
+            return true;
+        }
+    }
+    function isValidName(name) {
+        if (name.length < 5 || name.length > 20) {
+            $('#userNameError').show();
+            return false;
+        } else {
+            $('#userNameError').hide();
+            return true;
+        }
+    }
+    function validated(email, pass, confirmPass, name, isLogin) {
+        var valid = true;
+        if (!isLogin && (!isValidName(name) || !isValidConfirmPass(pass, confirmPass))) {
+            valid = false;
+        }
+        if (!isValidEmail(email) || !isValidPass(pass)) {
+            valid = false;
+        }
+        return valid;
+    }
+    function ajaxSignup() {
+        var email = $('#userEmail').val();
+        var pass = $('#userPass').val();
+        var confirmPass = $('#confirmUserPass').val();
+        var name = $('#userName').val();
+
+        if (!validated(email, pass, confirmPass, name, false)) {
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "<%= request.getContextPath() %>/signup/",
-            data: "name=" + name + "&email=" + email + "&password=" + pass,
+            data: "email=" + email + "&password=" + pass + "&name=" + name,
             dataType: "json",
             success: function (data) {
                 if (data["result"] == "ok") {
-                    alert("Sign up successful");
+                    $('#loginBtn').hide();
+                    $("#userEmail").hide();
+                    $('#userPass').hide();
+                    $('#confirmUserPass').hide();
+                    $('#userName').hide();
+                    $('#signupBtn').hide();
+                    $('#userSignupSuccess').show();
                 } else {
-                    alert("User already exists");
+                    $('#userSignupError').show();
                 }
             }
         });
     }
 
     function ajaxLogin() {
-        var email = $('#loginUserMail').val();
-        var pass = $('#loginUserPass').val();
+        var email = $('#userEmail').val();
+        var pass = $('#userPass').val();
+
+        if (!validated(email, pass, "", "", true)) {
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "<%= request.getContextPath() %>/login/",
@@ -118,18 +187,20 @@
             dataType: "json",
             success: function (data) {
                 if (data["result"] == "ok") {
-                    alert("Login successful.");
+                   location.reload();
                 } else {
-                    alert("Incorrect email or password.");
+                    $('#userLoginError').show();
                 }
             }
         });
     }
 
     var currentArticleId;
+
     function setArticleId(articleId) {
         currentArticleId = articleId;
     }
+
     function createNewArticle() {
         $('#myModal').modal('toggle');
         $('#modalTitle').val("");
@@ -138,20 +209,22 @@
         $('#modalType').val("small");
         setArticleId(-1);
     }
+
     function ajaxGetArticle(articleId) {
         $.getJSON("<%= request.getContextPath() %>/articles/get/" + articleId, function (data) {
             $('#modalTitle').val(data["title"]);
             $('#modalAuthor').val(data["author"]);
             $('#modalDate').text(data["date"]);
-            $('#modalContent').val(data["content"].replace(/<br\/>/g,"\n"));
+            $('#modalContent').val(data["content"].replace(/<br\/>/g, "\n"));
             $('#modalType').val(data["type"]);
         })
         setArticleId(articleId);
     }
+
     function ajaxPostArticle() {
         var title = $('#modalTitle').val();
         var author = $('#modalAuthor').val();
-        var content = $('#modalContent').val().replace(/\n/g,"<br/>");
+        var content = $('#modalContent').val().replace(/\n/g, "<br/>");
         var type = $('#modalType').val();
         if (currentArticleId == -1) {
             $.ajax({
