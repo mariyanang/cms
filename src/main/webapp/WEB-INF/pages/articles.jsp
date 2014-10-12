@@ -30,21 +30,24 @@
 <body>
 <nav class="navbar">
     <div class="nav-row" id="about">
-        <p>Hi, User</p>
-
-        <p>Share something stunning about you</p>
+        <c:if test="${user != null}">
+            <p>Hi, ${user.name}</p>
+        </c:if>
     </div>
     <div class="nav-row" id="login">
 
-        <a class="form-link" id="loginLink">Log in
-        </a>
+        <a class="form-link" id="loginLink">Log in</a>
         <span> | </span>
-        <a class="form-link" id="signupLink">Sign Up
-        </a>
+        <a class="form-link" id="signupLink">Sign Up</a>
+        <c:if test="${user != null}">
+            <span> | </span>
+            <a class="form-link" id="logout" href="<%= request.getContextPath() %>/logout">Log out</a>
+        </c:if>
 
         <input class="form-control form-control-focus" id="userEmail" type="email"
                placeholder="Email"
                name="user-email" autofocus="true"/>
+
         <div id="userEmailError" class="errorBox">Email should contain @</div>
         <div id="userLoginError" class="errorBox">Incorrect email or password</div>
         <div id="userSignupError" class="errorBox">Email already exists</div>
@@ -52,16 +55,19 @@
         <input class="form-control form-control-focus" id="userPass" type="password"
                placeholder="Password"
                name="user-password"/>
+
         <div id="userPassError" class="errorBox">Password should be between 5-20 characters</div>
 
         <input class="form-control form-control-focus" id="confirmUserPass" type="password"
                placeholder="Confirm Password"
                name="user-confirm-password"/>
+
         <div id="userConfirmPassError" class="errorBox">Passwords don't match</div>
 
         <input class="form-control form-control-focus" id="userName" type="text"
                placeholder="Name"
                name="user-email" autofocus="true"/>
+
         <div id="userNameError" class="errorBox">Name should be between 5-20 characters</div>
 
         <div id="userSignupSuccess" class="errorBox">Welcome, writer!</div>
@@ -100,38 +106,33 @@
         if (!email.match("@") || email.length > 50) {
             $('#userEmailError').show();
             return false;
-        } else {
-            $('#userEmailError').hide();
-            return true;
         }
-
+        $('#userEmailError').hide();
+        return true;
     }
     function isValidPass(pass) {
         if (pass.length < 5 || pass.length > 20) {
             $('#userPassError').show();
             return false;
-        } else {
-            $('#userPassError').hide();
-            return true;
         }
+        $('#userPassError').hide();
+        return true;
     }
     function isValidConfirmPass(pass, confirmPass) {
         if (confirmPass != pass) {
             $('#userConfirmPassError').show();
             return false;
-        } else {
-            $('#userConfirmPassError').hide();
-            return true;
         }
+        $('#userConfirmPassError').hide();
+        return true;
     }
     function isValidName(name) {
         if (name.length < 5 || name.length > 20) {
             $('#userNameError').show();
             return false;
-        } else {
-            $('#userNameError').hide();
-            return true;
         }
+        $('#userNameError').hide();
+        return true;
     }
     function validated(email, pass, confirmPass, name, isLogin) {
         var valid = true;
@@ -187,14 +188,13 @@
             dataType: "json",
             success: function (data) {
                 if (data["result"] == "ok") {
-                   location.reload();
+                    location.reload();
                 } else {
                     $('#userLoginError').show();
                 }
             }
         });
     }
-
     var currentArticleId;
 
     function setArticleId(articleId) {
@@ -204,41 +204,44 @@
     function createNewArticle() {
         $('#myModal').modal('toggle');
         $('#modalTitle').val("");
-        $('#modalAuthor').val("");
         $('#modalContent').val("");
         $('#modalType').val("small");
+        $('#modalAuthorWrapper').hide();
         setArticleId(-1);
     }
 
     function ajaxGetArticle(articleId) {
         $.getJSON("<%= request.getContextPath() %>/articles/get/" + articleId, function (data) {
             $('#modalTitle').val(data["title"]);
-            $('#modalAuthor').val(data["author"]);
+            $('#modalAuthor').text(data["user"]["name"]);
             $('#modalDate').text(data["date"]);
             $('#modalContent').val(data["content"].replace(/<br\/>/g, "\n"));
             $('#modalType').val(data["type"]);
+            $('#modalAuthorWrapper').show();
         })
         setArticleId(articleId);
     }
 
     function ajaxPostArticle() {
         var title = $('#modalTitle').val();
-        var author = $('#modalAuthor').val();
         var content = $('#modalContent').val().replace(/\n/g, "<br/>");
         var type = $('#modalType').val();
         if (currentArticleId == -1) {
             $.ajax({
                 type: "POST",
                 url: "<%= request.getContextPath() %>/articles/add",
-                data: "title=" + title + "&author=" + author + "&content=" + content + "&type=" + type,
+                data: "title=" + title + "&content=" + content + "&type=" + type,
                 dataType: "json",
                 success: function (data) {
+                    if (data["result"] == "error") {
+                        alert("You are not logged in");
+                    }
                     setArticleId(data["id"]);
                     var newArticleHtml = '<div id="articleTypeDiv-' + currentArticleId + '" class="post-' + type + '" data-toggle="modal" data-target="#myModal" onclick="ajaxGetArticle(' + currentArticleId + ')">\
                             <div class="article"> \
                             <h1 id="articleTitle-' + currentArticleId + '">' + title + '</h1>\
                     <br/>\
-                    <h5 id="articleAuthor-' + currentArticleId + '">By ' + author + ' published on ' + data["date"] + '</h5>\
+                    <h5 id="articleAuthor-' + currentArticleId + '">By ' + data["userName"] + ' published on ' + data["date"] + '</h5>\
                     <br/>\
                     <p id="articleContent-' + currentArticleId + '">' + content + '</p>\
                     </div>\
@@ -273,8 +276,9 @@
     }
 </script>
 <div class="container-fluid">
-    <a class="form-link" id="addArticle" onclick="createNewArticle()"><h1>+ Add article</h1></a>
-
+    <c:if test="${user != null}">
+        <a class="form-link" id="addArticle" onclick="createNewArticle()"><h1>+ Add article</h1></a>
+    </c:if>
     <div id="articlesContainer" class="row">
         <c:forEach items="${articles}" var="article">
             <c:set var="articleType" value="post-medium"></c:set>
@@ -285,7 +289,10 @@
                 <c:set var="articleType" value="post-large"></c:set>
             </c:if>
             <!-- div triggering modal -->
-            <div id="articleTypeDiv-${article.id}" class="${articleType}" data-toggle="modal" data-target="#myModal"
+            <c:if test="${user != null}">
+                <c:set var="toggleModal" value='data-toggle="modal" data-target="#myModal"'/>
+            </c:if>
+            <div id="articleTypeDiv-${article.id}" class="${articleType}" ${toggleModal}
                  onclick="ajaxGetArticle(${article.id})">
                     <%--<div currentArticleId="img-holder" style="background-image: url('{{item.img}}');"></div>--%>
                 <div class="article">
@@ -293,17 +300,19 @@
 
                     <h1 id="articleTitle-${article.id}">${article.title}</h1>
                     <br/>
-                    <h5 id="articleAuthor-${article.id}">By ${article.author} published on ${article.date}</h5>
+                    <h5 id="articleAuthor-${article.id}">By ${article.user.name} published on ${article.date}</h5>
                     <br/>
 
                     <p id="articleContent-${article.id}">${article.content}</p>
                     <br/>
                 </div>
                 <div class="modal-footer">
-                    <a class="form-link" id="deleteArticle"
-                       href="<%= request.getContextPath() %>/articles/delete/${article.id}">
-                        <button type="button" class="btn btn-primary">Delete</button>
-                    </a>
+                    <c:if test="${user != null}">
+                        <a class="form-link" id="deleteArticle"
+                           href="<%= request.getContextPath() %>/articles/delete/${article.id}">
+                            <button type="button" class="btn btn-primary">Delete</button>
+                        </a>
+                    </c:if>
                 </div>
             </div>
         </c:forEach>
@@ -320,13 +329,13 @@
                             aria-hidden="true">&times;</span><span
                             class="sr-only">Close</span></button>
                     <h1 class="modal-title"><input type="text" id="modalTitle"
-                                                   class="form-control form-control-focus"/></h1>
-                    <h5 class="modal-title">By <input path="author" id="modalAuthor"
-                                                      class="form-control form-control-focus"/> published on
+                                                   class="form-control form-control-focus" placeholder="Title"/></h1>
+                    <h5 id="modalAuthorWrapper" class="modal-title">By <span id="modalAuthor"></span> published on
                         <span id="modalDate"></span></h5>
                 </div>
                 <div class="modal-body">
-                    <textarea type="text" id="modalContent" class="form-control form-control-focus"></textarea>
+                    <textarea type="text" id="modalContent" class="form-control form-control-focus"
+                              placeholder="Your article"></textarea>
                 </div>
                 <div class="modal-footer">
                     <select class="btn btn-default" id="modalType">

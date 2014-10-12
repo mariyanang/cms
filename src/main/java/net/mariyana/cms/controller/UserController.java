@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Controller
 public class UserController {
     public static final String PATH_USERS = "/users";
@@ -25,32 +29,49 @@ public class UserController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public String signup(@ModelAttribute User user) throws JSONException {
-        String result = ResponseCode.ERROR;
+        String result = AjaxResponseCode.ERROR;
 
         //TODO server-side validation
         if (userRepository.getByEmail(user.getEmail()) == null) {
             userRepository.save(user);
-            result = ResponseCode.OK;
+            result = AjaxResponseCode.OK;
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result", "" + result);
-        return "" + jsonObject;
+        jsonObject.put(AjaxResponseCode.FIELD_RESPONSE_CODE, result);
+        return jsonObject.toString();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
-    public String login(@ModelAttribute User userFromRequest) throws JSONException {
-        String result = ResponseCode.OK;
+    public void login(@ModelAttribute User userFromRequest, HttpServletResponse response) throws JSONException, IOException {
+        String result = AjaxResponseCode.OK;
 
         User user = userRepository.getByEmail(userFromRequest.getEmail());
         if (user == null ||
                 !user.getPassword().equals(userFromRequest.getPassword())) {
-            result = ResponseCode.ERROR;
+            result = AjaxResponseCode.ERROR;
         }
+
+        Cookie userIdCookie = new Cookie("USER_ID", user.getId() + "");
+        userIdCookie.setPath("/");
+        userIdCookie.setMaxAge(60 * 1000);
+        response.addCookie(userIdCookie);
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result", "" + result);
-        return "" + jsonObject;
+        jsonObject.put(AjaxResponseCode.FIELD_RESPONSE_CODE, result);
+
+        response.getWriter().println(jsonObject);
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logOut(HttpServletResponse response) {
+        Cookie userIdCookie = new Cookie("USER_ID", "");
+        userIdCookie.setPath("/");
+        userIdCookie.setMaxAge(-1);
+        response.addCookie(userIdCookie);
+        return "redirect:/articles";
     }
 
     @RequestMapping(value = PATH_USERS, method = RequestMethod.GET)

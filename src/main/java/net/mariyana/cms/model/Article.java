@@ -1,11 +1,16 @@
 package net.mariyana.cms.model;
 
 import javax.persistence.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(name = "article")
 public class Article {
+
+    @Transient
+    private DateFormat dateFormatter = new SimpleDateFormat("dd MMMM, yyyy");
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,8 +21,8 @@ public class Article {
     @Basic
     private String title;
 
-    @Basic
-    private String author;
+    @ManyToOne
+    private User user;
 
     @Basic
     private Date date;
@@ -49,18 +54,16 @@ public class Article {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDate() {
-        String formattedDate = new SimpleDateFormat("dd MM yyyy").format(date);
-
-        return formattedDate;
+        return dateFormatter.format(date);
     }
 
     public void setDate(Date date) {

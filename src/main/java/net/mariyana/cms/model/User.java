@@ -1,5 +1,8 @@
 package net.mariyana.cms.model;
 
+
+import org.json.JSONObject;
+
 import javax.persistence.*;
 
 @Entity(name = "account")
@@ -16,6 +19,16 @@ public class User {
 
     @Basic
     private String password;
+
+    public static void main(String[] args) {
+        User user = new User();
+        user.setId(1L);
+        user.setName("test");
+        user.setEmail("rata");
+        user.setPassword("badwolf");
+
+        System.out.println(new JSONObject(user).toString());
+    }
 
     public Long getId() {
         return id;
@@ -48,6 +61,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 }
