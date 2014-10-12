@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class UserController {
     public static final String PATH_USERS = "/users";
@@ -27,12 +25,12 @@ public class UserController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public String signup(@ModelAttribute User user) throws JSONException {
-        String result = "not ok";
+        String result = ResponseCode.ERROR;
 
         //TODO server-side validation
         if (userRepository.getByEmail(user.getEmail()) == null) {
             userRepository.save(user);
-            result = "ok";
+            result = ResponseCode.OK;
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -43,12 +41,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public String login(@ModelAttribute User userFromRequest) throws JSONException {
-        String result = "ok";
+        String result = ResponseCode.OK;
 
         User user = userRepository.getByEmail(userFromRequest.getEmail());
         if (user == null ||
                 !user.getPassword().equals(userFromRequest.getPassword())) {
-            result = "not ok";
+            result = ResponseCode.ERROR;
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "" + result);
