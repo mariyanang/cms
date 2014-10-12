@@ -15,6 +15,7 @@ import java.util.List;
 public class UserController {
     public static final String PATH_USERS = "/users";
 
+
     @Autowired
     private UserRepository userRepository;
 
@@ -25,40 +26,31 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public String signup(@RequestParam String name, @RequestParam String email, @RequestParam String password) throws JSONException {
+    public String signup(@ModelAttribute User user) throws JSONException {
         String result = "not ok";
-        JSONObject jsonObject = new JSONObject();
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
 
-        List<User> users = userRepository.findAll();
-        for (User currentUser : users) {
-            if (currentUser.getEmail().equals(user.getEmail())) {
-                jsonObject.put("result", "" + result);
-                return "" + jsonObject;
-            }
+        //TODO server-side validation
+        if (userRepository.getByEmail(user.getEmail()) == null) {
+            userRepository.save(user);
+            result = "ok";
         }
-        userRepository.save(user);
-        result = "ok";
+
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "" + result);
         return "" + jsonObject;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestParam String email, @RequestParam String password) throws JSONException {
-        JSONObject jsonObject = new JSONObject();
-        String result = "not ok";
-        List<User> users = userRepository.findAll();
-        for (User currentUser : users) {
-            if (currentUser.getEmail().equals(email) &&
-                    currentUser.getPassword().equals(password)) {
-                result = "ok";
-                break;
-            }
+    public String login(@ModelAttribute User userFromRequest) throws JSONException {
+        String result = "ok";
+
+        User user = userRepository.getByEmail(userFromRequest.getEmail());
+        if (user == null ||
+                !user.getPassword().equals(userFromRequest.getPassword())) {
+            result = "not ok";
         }
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "" + result);
         return "" + jsonObject;
     }

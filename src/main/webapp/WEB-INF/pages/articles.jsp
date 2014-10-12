@@ -56,7 +56,7 @@
 
         <input class="form-control form-control-focus" id="confirmUserPass" type="password"
                placeholder="Confirm Password"
-               name="user-password"/>
+               name="user-confirm-password"/>
         <div id="userConfirmPassError" class="errorBox">Passwords don't match</div>
 
         <input class="form-control form-control-focus" id="userName" type="text"
