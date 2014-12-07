@@ -6546,6 +6546,9 @@ img {
 #addArticle:hover {
   color: #e65668;
 }
+body {
+  color: #2d3f4f;
+}
 h1,
 h2,
 h3,

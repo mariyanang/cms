@@ -36,9 +36,12 @@
     </div>
     <div class="nav-row" id="login">
 
-        <a class="form-link" id="loginLink">Log in</a>
-        <span> | </span>
-        <a class="form-link" id="signupLink">Sign Up</a>
+        <c:if test="${user == null}">
+            <a class="form-link" id="loginLink">Log in</a>
+            <span> | </span>
+            <a class="form-link" id="signupLink">Sign Up</a>
+        </c:if>
+
         <c:if test="${user != null}">
             <span> | </span>
             <a class="form-link" id="logout" href="<%= request.getContextPath() %>/logout">Log out</a>
@@ -71,6 +74,7 @@
         <div id="userNameError" class="errorBox">Name should be between 5-20 characters</div>
 
         <div id="userSignupSuccess" class="errorBox">Welcome, writer!</div>
+
         <button type="button" class="btn btn-primary" id="loginBtn"
                 onclick="ajaxLogin()">Log in
         </button>

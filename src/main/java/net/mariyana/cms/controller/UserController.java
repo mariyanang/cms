@@ -50,12 +50,12 @@ public class UserController {
         if (user == null ||
                 !user.getPassword().equals(userFromRequest.getPassword())) {
             result = AjaxResponseCode.ERROR;
+        } else {
+            Cookie userIdCookie = new Cookie("USER_ID", user.getId() + "");
+            userIdCookie.setPath("/");
+            userIdCookie.setMaxAge(60 * 1000);
+            response.addCookie(userIdCookie);
         }
-
-        Cookie userIdCookie = new Cookie("USER_ID", user.getId() + "");
-        userIdCookie.setPath("/");
-        userIdCookie.setMaxAge(60 * 1000);
-        response.addCookie(userIdCookie);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(AjaxResponseCode.FIELD_RESPONSE_CODE, result);

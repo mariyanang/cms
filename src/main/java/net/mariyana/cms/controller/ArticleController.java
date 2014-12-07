@@ -98,9 +98,11 @@ public class ArticleController {
     //----------------------------------------------------------------------------
 
     private User getValidLoggedInUser(HttpServletRequest request) {
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals("USER_ID") && !cookie.getValue().equals("")) {
-                return userRepository.findOne(Long.parseLong(cookie.getValue()));
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("USER_ID") && !cookie.getValue().equals("")) {
+                    return userRepository.findOne(Long.parseLong(cookie.getValue()));
+                }
             }
         }
         return null;
